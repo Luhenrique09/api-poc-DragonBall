@@ -1,8 +1,6 @@
-import { connectionDB } from "../database/db.js";
 import { Request, Response } from "express";
 import { Characters } from "../protocols/body.js";
 import { createRep, findAllRep, findByIdRep, removeRep, updateRep } from "../repository/characters.repository.js";
-import { number } from "../../node_modules/joi/lib/index.js";
 
 export async function create(req: Request, res: Response) {
     const characters = req.body as Characters;
@@ -18,9 +16,9 @@ export async function create(req: Request, res: Response) {
 
 export async function findAll(req: Request, res: Response) {
     try {
-        const {rows} = await findAllRep();
-
-        res.send(rows);
+        const result = await findAllRep();
+        
+        res.send(result.rows);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -28,7 +26,7 @@ export async function findAll(req: Request, res: Response) {
 
 export async function findById(req: Request, res: Response) {
     const { id } = req.params;
-
+    
     try {
         const { rows } = await findByIdRep(Number(id))
         if (rows.length === 0) {
@@ -45,7 +43,7 @@ export async function findById(req: Request, res: Response) {
 export async function update(req: Request, res: Response) {
     const characters = req.body as Characters;
     const  {id}  = req.params;
-
+    
     try {
         await updateRep(characters, Number(id));
 
