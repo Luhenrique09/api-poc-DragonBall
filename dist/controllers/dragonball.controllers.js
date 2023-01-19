@@ -93,6 +93,10 @@ export function findById(req, res) {
                     return [4 /*yield*/, connectionDB.query("SELECT * FROM characters WHERE id=$1;", [id])];
                 case 2:
                     rows = (_a.sent()).rows;
+                    if (rows.length === 0) {
+                        res.send("Id não existe!");
+                        return [2 /*return*/];
+                    }
                     res.send(rows);
                     return [3 /*break*/, 4];
                 case 3:
