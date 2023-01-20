@@ -1,21 +1,21 @@
 import { QueryResult } from "pg";
 import { connectionDB } from "../database/db.js";
-import { Characters } from "../protocols/body.js";
+import { Characters, CharactersEntity } from "../protocols/body.js";
 
-export async function findAllRep() : Promise<QueryResult<Characters>> {
+export async function findAllRep() : Promise<QueryResult<CharactersEntity>> {
     return connectionDB.query(
         "SELECT * FROM characters;"
     );
 }
 
-export async function createRep({name, level, transformations}: Characters) : Promise<QueryResult> {
+export async function createRep({name, level, transformations, image}: Characters) : Promise<QueryResult<CharactersEntity>> {
    return connectionDB.query(
-        "INSERT INTO characters (name, level, transformations) VALUES ($1, $2, $3);",
-        [name, level, transformations]
+        "INSERT INTO characters (name, level, transformations, image) VALUES ($1, $2, $3, $4);",
+        [name, level, transformations, image]
     );
 } 
 
-export async function findByIdRep(id:number) : Promise<QueryResult<Characters>>  {
+export async function findByIdRep(id:number) : Promise<QueryResult<CharactersEntity>>  {
     return connectionDB.query(
         "SELECT * FROM characters WHERE id=$1;",
         [id]
